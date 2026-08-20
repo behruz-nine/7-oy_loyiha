@@ -1,58 +1,97 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.exceptions import NotFound
 from .models import Product
+from django.views import View
+from .serializers import ProductSerializer
 
 
 # Create your views here.
 
-
 @api_view(['POST', 'GET'])
 def create_get_product(request):
     if request.method == 'POST':
-        product_name = request.data.get('product_name')
-        description = request.data.get('description')
-        price  = request.data.get('price')
-        quantity = request.data.get('quantity')
-
-        product = Product.objects.create(
-            product_name=product_name,
-            description=description,
-            price=price,
-            quantity=quantity
-        )
-        product.save()
-
-        return Response(
+        serializer = ProductSerializer(data = request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(
             {
-                'msg': 'Product created successfully',
-                'status':  status.HTTP_201_CREATED
-            }  
-        )
-
-    if request.method == 'GET':
-        products = Product.objects.all()
-        project_list = []
-        for product in products:
-            project_list.append(
-                {'product_name': product.product_name,
-                'description': product.description,
-                'price': product.price,
-                'quantity': product.quantity,
-                'product id': product.id}
-                )
-        return Response(
-            {
-                'msg': project_list,
+                'msg': 'Product is created successfully',
+                'product': serializer.data,
                 'status': status.HTTP_201_CREATED
             }
         )
+    if request.method == 'GET':
+        products = Product.objects.all()
+        serializer = ProductSerializer(products, many=True)
+        return Response(
+            {
+                'products': serializer.data,
+                'status': status.HTTP_200_OK
+            }
+        )
+    
+
+
+@api_view(['GET','PUT','PATCH', 'DELETE'])
+def product_dppd(request, product_id):
+    if request.method == 'GET':
+        product = Product.objects.filter(id=product_id).first()
+        if product:
+            serializer = ProductSerializer(product)
+            return Response(
+                {
+                    'product': serializer.data,
+                    'status': status.HTTP_200_OK
+                }
+            )
+
+
+    if request.method == 'PUT':
+       product =Product.objects.filter(id=product_id).first()
+       if product:
+           serializer = ProductSerializer(instance = product, data=request.data)
+           if serializer.is_valid():
+               serializer.save()
+               return Response(
+                   {
+                       'msg': 'Product is updated successfully',
+                       'product': serializer.data,
+                       'status': status.HTTP_200_OK    }
+               )
+           
+
+    if request.method == 'PATCH':
+       product =Product.objects.filter(id=product_id).first()
+       if product:
+           serializer = ProductSerializer(instance = product, data=request.data, partial= True)
+           if serializer.is_valid():
+               serializer.save()
+               return Response(
+                   {
+                       'msg': 'Product is updated partially',
+                       'product': serializer.data,
+                       'status': status.HTTP_200_OK    }
+               )
+
+
+    if request.method == 'DELETE':
+        product = Product.objects.filter(id = product_id).first()
+        product.delete()
+
+        return Response(
+            {
+                'msg': 'Product is deleted successfully',
+                'status': status.HTTP_200_OK
+            }
+        )
+
 
 #====================================================
 
-@api_view(['GET','PUT','PATCH', 'DELETE'])
+"""@api_view(['GET','PUT','PATCH', 'DELETE'])
 def product_dppd(request, product_id):
     if request.method == 'GET':
         product = Product.objects.get(id = product_id)
@@ -125,8 +164,9 @@ def product_dppd(request, product_id):
                 'msg': 'Product is deleted successfully',
                 'status': status.HTTP_200_OK
             }
-        )
+        )"""
 
 #==============================================================
 
-    
+
+
