@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'rest_framework',
     #ichki applar
     'drf',
+    'drf2',
 ]
 
 MIDDLEWARE = [
