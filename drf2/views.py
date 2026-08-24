@@ -4,9 +4,30 @@ from .serializers import ProductSerializer
 from rest_framework.response import Response
 from rest_framework import status
 from .models import Product
-from rest_framework.generics import GenericAPIView
+from rest_framework.generics import GenericAPIView, ListCreateAPIView, RetrieveUpdateDestroyAPIView
 
 # Create your views here.
+
+"""class ProductListCreateAPIView(ListCreateAPIView):
+    serializer_class = ProductSerializer
+    queryset = Product.objects.all()
+
+
+class ProductRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
+    serializer_class = ProductSerializer
+    queryset = Product.objects.all()"""
+
+
+
+
+
+
+
+
+
+
+
+
 
 class CreateProduct(GenericAPIView):
     serializer_class = ProductSerializer
@@ -91,6 +112,20 @@ class DeleteProduct(APIView):
             }
         )
     
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
