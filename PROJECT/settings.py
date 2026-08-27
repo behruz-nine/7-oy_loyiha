@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     #ichki applar
     'drf',
     'drf2',
+    'vs'
 ]
 
 MIDDLEWARE = [

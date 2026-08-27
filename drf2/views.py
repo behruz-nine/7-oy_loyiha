@@ -206,4 +206,58 @@ class DeleteProduct(APIView):
                 'status': status.HTTP_204_NO_CONTENT
             }
         )"""
+  
+
+
+class Register():
+    def get(self, request):
+        form = RegisterForm()
+        return render(
+            request = request,
+            template_name= 'register.html',
+            context ={'form': form}       
+            )
+    def post(self, request):
+        form = RegisterForm(request.POST)
+        if form.is_valid():
+            password = form.cleaned_data['password']
+            user =form.save(commit=False)
+            user.set_password(row_password= password)
+            user.save()
+            return redirect('/login/')
+        return render(
+            request = request,
+            template_name= 'register.html',
+            context ={'form': form}
+            )
     
+class Login():
+    def get(self, request):
+        form = LoginForm()
+        return render(
+            request = request,
+            template_name= 'login.html',
+            context = {'form': form}
+        )
+    def post(self, request):
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        user = authenticate(username=username, password=password)
+        if user:
+            login(
+                request = request,
+                user = user
+            )
+            return redirect('//')
+        return render(
+            request = request,
+            template_name= 'login.html',
+            context = {'form': form}
+        )
+
+def log_out(request):
+    logout(
+        request= request
+    )
+    return redirect('/login/')
