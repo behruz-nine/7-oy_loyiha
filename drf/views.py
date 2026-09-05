@@ -6,6 +6,12 @@ from rest_framework.exceptions import NotFound
 from .models import Product
 from django.views import View
 from .serializers import ProductSerializer
+from django.db.models import Q
+
+
+
+
+
 
 
 # Create your views here.
@@ -24,7 +30,16 @@ def create_get_product(request):
             }
         )
     if request.method == 'GET':
+        page = request.query_params.get('page')
+        page_size = 3
         products = Product.objects.all()
+        title = request.query_params.get('title')
+        if title:
+            products = products.filter(Q(product_name__icontains = title))
+
+        if page:
+            products = products[(int(page)-1)*page_size : int(page)*page_size]
+        
         serializer = ProductSerializer(products, many=True)
         return Response(
             {
@@ -42,7 +57,7 @@ def product_dppd(request, product_id):
         if product:
             serializer = ProductSerializer(product)
             return Response(
-                {
+                {   
                     'product': serializer.data,
                     'status': status.HTTP_200_OK
                 }
