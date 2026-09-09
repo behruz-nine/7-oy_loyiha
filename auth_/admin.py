@@ -1,4 +1,8 @@
 from django.contrib import admin
-from drf.models import Product
+from .models import Account
+
 # Register your models here.
+
+admin.site.register(Account)
+
 

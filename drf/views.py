@@ -10,10 +10,6 @@ from django.db.models import Q
 
 
 
-
-
-
-
 # Create your views here.
 
 @api_view(['POST', 'GET'])
