@@ -7,6 +7,7 @@ from .models import Account
 from django.contrib.auth import authenticate
 from rest_framework.exceptions import ValidationError
 from rest_framework.authtoken.models import Token
+from rest_framework import permissions
 
 
 
@@ -59,6 +60,7 @@ class LoginView(APIView):
                 )
             
 class ProfileView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
     def get(self, request):
         
         user = request.user
