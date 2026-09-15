@@ -11,3 +11,13 @@ class AccountSerializer(serializers.ModelSerializer):
 class LoginSerializer(serializers.Serializer):
     username = serializers.CharField()
     password = serializers.CharField()
+
+
+class AccountUpdateSerializer(AccountSerializer):
+    id = serializers.CharField(read_only = True)
+
+
+class PasswordChangeSerializer(serializers.Serializer):
+   old_password = serializers.CharField()
+   new_password = serializers.CharField()
+   conf_password = serializers.CharField()
