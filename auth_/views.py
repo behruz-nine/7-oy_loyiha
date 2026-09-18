@@ -1,3 +1,5 @@
+
+
 from django.shortcuts import render
 from .serializers import AccountSerializer, LoginSerializer, AccountUpdateSerializer, PasswordChangeSerializer
 from rest_framework import status
@@ -111,3 +113,6 @@ class PasswordChangeView(APIView):
                     'status': status.HTTP_200_OK
                 }
             )
+
+
+
