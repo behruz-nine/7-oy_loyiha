@@ -24,7 +24,8 @@ urlpatterns = [
     path('av/', include('drf2.urls')),
     path('vs/', include('vs.urls')),
     path('auth/', include('auth_.urls')),
-    path('auth2/', include('auth2.urls'))
+    path('auth2/', include('auth2.urls')),
+    path('auth_jwt/', include('auth_jwt.urls'))
 ]
 
 

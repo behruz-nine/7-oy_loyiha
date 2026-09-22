@@ -40,23 +40,36 @@ INSTALLED_APPS = [
     #tashqi applar
     'rest_framework',
     'rest_framework.authtoken',
+    'rest_framework_simplejwt',
+
     #ichki applar
     'drf',
     'drf2',
     'vs',
     'auth_',
-    'auth2'
+    'auth2',
+    'auth_jwt',
 ]
 
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.TokenAuthentication',],
+
+        'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication'],
 
         'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticated',]
-
-    
+        'rest_framework.permissions.IsAuthenticated',] 
 }
+
+
+from datetime import timedelta
+...
+
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
+    "ROTATE_REFRESH_TOKENS": False,
+    "BLACKLIST_AFTER_ROTATION": False,
+    "UPDATE_LAST_LOGIN": False,}
 
 
 

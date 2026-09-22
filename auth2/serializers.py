@@ -67,7 +67,6 @@ class PasswordChangeSerializer2(serializers.Serializer):
         if current_user is None:
             raise ValidationError('Eski parol xato')
         
-        
         return data
 
     
